@@ -1,0 +1,147 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+amenv/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints
+
+# Old/outdated notebooks (replaced by new notebook structure)
+notebooks_old/
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Data files (large binary files)
+data/*.dcm
+data/*.dicom
+data/*.raw
+data/*.tif
+data/*.tiff
+data/*.nii
+data/*.nii.gz
+data/*.mhd
+data/*.mha
+data/*.npy
+data/*.npz
+# Keep directory structure
+!data/.gitkeep
+!data/segmented_data/.gitkeep
+
+# Output files
+outputs/**/*
+!outputs/.gitkeep
+!outputs/images/.gitkeep
+!outputs/reports/.gitkeep
+!outputs/metrics/.gitkeep
+
+# Generated data
+data/segmented_data/*.csv
+!data/segmented_data/.gitkeep
+
+# Backup directories
+src_backup/
+*_backup/
+*.bak
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+.hypothesis/
+
+# Documentation builds
+docs/_build/
+docs/.doctrees/
+
+# Environment variables
+.env
+.env.local
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Large result files
+*.h5
+*.hdf5
+
+# Plot outputs (can be regenerated)
+*.png
+*.jpg
+*.jpeg
+*.pdf
+*.svg
+*.eps
+!docs/**/*.png
+!docs/**/*.jpg
+!docs/**/*.pdf
+
+# Configuration files with sensitive data
+config.local.*
+*.local
+
+# Script outputs
+cleanup_docs.py
+reorganize_src.py
+
+# Local development tools
+bin/
+

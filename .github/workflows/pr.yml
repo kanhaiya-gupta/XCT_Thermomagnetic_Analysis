@@ -1,0 +1,94 @@
+name: PR Checks
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Pull Request number to check'
+        required: true
+        type: string
+      branch:
+        description: 'Target branch'
+        required: false
+        default: 'main'
+        type: choice
+        options:
+          - main
+          - develop
+
+jobs:
+  pr-checks:
+    name: PR Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Check for test files
+      run: |
+        if [ -z "$(find tests/ -name 'test_*.py' -type f)" ]; then
+          echo "⚠️ Warning: No test files found"
+        else
+          echo "✓ Test files found"
+        fi
+    
+    - name: Run quick validation tests
+      run: |
+        pytest tests/ -m "unit" -v --tb=line -x
+    
+    - name: Check import structure
+      run: |
+        python -c "import sys; sys.path.insert(0, '.'); from src.analyzer import XCTAnalyzer; print('✓ Imports work correctly')"
+    
+    - name: Validate pytest configuration
+      run: |
+        pytest --collect-only -q || true
+
+  format-check:
+    name: Code Format Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+    
+    - name: Install Black
+      run: |
+        pip install black
+    
+    - name: Check code formatting
+      run: |
+        black --check src/ tests/ || (echo "❌ Code formatting issues found. Run 'black src/ tests/' to fix." && exit 1)
+    
+    - name: Comment PR with formatting suggestions
+      if: failure()
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const prNumber = parseInt('${{ github.event.inputs.pr_number }}');
+          github.rest.issues.createComment({
+            issue_number: prNumber,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '⚠️ Code formatting issues detected. Please run `black src/ tests/` to format your code.'
+          })
+
+
